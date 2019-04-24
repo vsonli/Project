@@ -1,3 +1,7 @@
+# -*- coding:utf-8 -*-
+# @Time   :2019/4/24 17:10
+# @File   :message.py
+# @Author :Vsonli
 from tkinter import *
 from tkinter import messagebox
 #pip install pillow为安装PIL

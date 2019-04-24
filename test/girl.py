@@ -1,4 +1,7 @@
-#Python学习群548377875
+# -*- coding:utf-8 -*-
+# @Time   :2019/4/24 17:10
+# @File   :message.py
+# @Author :Vsonli
 import requests
 from bs4 import BeautifulSoup
 import os
