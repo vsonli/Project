@@ -70,7 +70,7 @@ def revoke_msg(msg):
 
         #发送给自己的账号
         string1 = str(old_msg.get('msg_from_user')) + '：' + str(old_msg.get('msg_content'))
-        users = itchat.search_friends(name='媳妇家最可爱的咸鱼小弟')
+        users = itchat.search_friends(name='Vson')
         userName = users[0]['UserName']
         itchat.send('有人撤回了信息', toUserName=userName)
         itchat.send(string1, toUserName=userName)
