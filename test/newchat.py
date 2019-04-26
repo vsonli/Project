@@ -9,7 +9,7 @@ import re
 import time
 # 文件临时存储页
 #rec_tmp_dir = os.path.join(os.getcwd(), 'D:\\Vson\\data')
-rec_tmp_dir =  'D:\\Vson\\data\\'
+rec_tmp_dir =  'C:\\itchatData\\'
 # 存储数据的字典
 rec_msg_dict = {}
 
@@ -74,7 +74,7 @@ def revoke_msg(msg):
         userName = users[0]['UserName']
         itchat.send('有人撤回了信息', toUserName=userName)
         itchat.send(string1, toUserName=userName)
-        print(userName)
+        #print(userName)
 
         # 判断文msg_content是否存在，不存在说明可能是
         if os.path.exists( os.path.join(rec_tmp_dir, str( old_msg.get('msg_content'))) ):
