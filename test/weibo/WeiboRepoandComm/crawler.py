@@ -7,7 +7,7 @@ import requests,json
 import re,random,time
 
 # 就是同文件夹的ippool.py
-from test.WeiboCrawler.WeiboRepoandComm import buildippool
+from test.weibo.WeiboRepoandComm import buildippool
 
 def repostTable():
     createRepostTable='''CREATE TABLE IF NOT EXISTS  repost(Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,

@@ -2,8 +2,8 @@
 # version:python3.7
 # author:Ivy
 
-import test.WeiboCrawler.WeiboLocationCrawler.crawler as crawler
-import test.WeiboCrawler.WeiboLocationCrawler.buildip as buildip
+import test.weibo.WeiboLocationCrawler.crawler as crawler
+import test.weibo.WeiboLocationCrawler.buildip as buildip
 import time
 import yagmail
 import pandas
