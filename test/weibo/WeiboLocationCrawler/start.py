@@ -42,4 +42,4 @@ if __name__ == '__main__':
         pic_m = pic_pd.shape[0]
         conn.close()
         yag.send(to = [emailname], subject = 'All Done', contents = ['这一段时间的都爬完了，三个小时后继续。耗时{}秒。现在共有微博{}条，图片{}张。具体微博情况为{}'.format(time_end-time_start, wb_m, pic_m,wb_detail)])
-        time.sleep(500) #设置3个小时执行一次
+        time.sleep(10800) #设置3个小时执行一次
