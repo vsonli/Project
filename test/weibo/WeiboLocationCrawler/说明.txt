@@ -1,0 +1,17 @@
+签到页进行爬取的项目
+这个项目是用来爬取微博签到页的微博数据（每三个小时爬一次），并写进sqlite数据库。
+关于微博签到页打个比方，就是类似这个https://weibo.com/p/100101B2094757D069A7FE449F
+依赖环境：pip install yagmail pandas bs4
+3 使用方法
+step1. 修改pid.csv中的地点名词与对应的id。
+step2. 修改start.py中的邮箱账号密码。
+step3. Run start.py
+4 文件说明包含四个文件。
+pid.csv
+是放置地点的名称和微博页面对应的位置id。比如说上面的珞珈山，就是网页URL最后的那一串数字100101B2094757D069A7FE449F。
+buildip.py
+这个文件是一个实现爬取代理网站上的代理IP来构建代理池的模块。
+crawler.py
+爬虫本体。
+start.py
+控制爬取多个地点的一个启动文件。

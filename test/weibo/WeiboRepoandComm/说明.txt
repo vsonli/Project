@@ -1,0 +1,19 @@
+1 实现功能
+这个项目是用来爬取单条微博的转发或者评论博数据，并写进 sqlite 数据库。可能会用到你自己的 cookie（代码中要求必须写，不然会报错）。
+2 依赖环境
+使用的是 Python 3.7。无需额外的第三方库。
+3 使用方法
+step1. 修改 start.py 中的 cookie, mid（微博 id），type（转发 repost 还是评论 comment )。
+step2. Run start.py。
+如果使用了 cookie 访问网页的话，会比较慢一点，因为不想被封号……所以设置的3s访问一次。
+微博ID：对于电脑端 weibo.com 来说，点击一条微博的评论处的查看更多，就会跳转这条微博的微博页。
+而地址栏中的网址<https://weibo.com/1929075382/Hu2bGcN5r?filter=hot&root_comment_id=0&type=comment#_rnd1557761434227>中
+        的Hu2bGcN5r就是这条微博的二进制 id 了。其实微博还有数字 id ，但是都一样，不用 care 这么多。
+4 文件说明
+包含三个文件。
+buildippool.py
+这个文件是一个实现爬取代理网站上的代理 IP 来构建代理池的模块。
+crawler.py
+爬虫本体。
+start.py
+一个启动文件。
