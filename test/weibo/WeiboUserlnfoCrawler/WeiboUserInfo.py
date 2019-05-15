@@ -183,7 +183,6 @@ def main():
 if __name__ == '__main__':
     while True:
         main()
-
         print('这段时间的用户信息爬取完毕')
         yag.send(to = [emailname], subject = '这段时间的用户信息爬取完毕', contents = ['三小时后再继续'])
         time.sleep(10800)
