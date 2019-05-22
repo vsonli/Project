@@ -44,7 +44,7 @@ def wifi_connect(pwd):
         profile = pywifi.Profile()
         #要连接wifi的名称
         profile.ssid = '名称'
-        #网卡的开房状态
+        #网卡的开放状态
         profile.auth = const.AUTH_ALG_OPEN
         #wifi加密算法，一般wifi加密算法为wps
         profile.akm.append(const.AKM_TYPE_WPA2PSK)
