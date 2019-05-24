@@ -2,55 +2,30 @@
 # @Time   :2019/5/17 12:26
 # @File   :test.py
 # @Author :Vsonli
-# 导入pandas包并重命名为pd
-import pandas as pd
+from flask import Flask
+import flask_restful
+import sys
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
+'''
+以上是python2的写法，但是在python3中这个需要已经不存在了，这么做也不会什么实际意义。 
+在Python2.x中由于str和byte之间没有明显区别，经常要依赖于defaultencoding来做转换。 
+在python3中有了明确的str和byte类型区别，从一种类型转换成另一种类型要显式指定encoding。
+'''
 
-# Import retail sales data from an Excel Workbook into a data frame
-# path = '/Documents/analysis/python/examples/2015sales.xlsx'
-path = 'aa.xlsx'
-xlsx = pd.ExcelFile(path)
-df = pd.read_excel(xlsx, 'Sheet1')
-
-# Let's add a new boolean column to our dataframe that will identify a duplicated order line item (False=Not a duplicate; True=Duplicate)
-df['is_duplicated'] = df.duplicated(['test'])
-
-# We can sum on a boolean column to get a count of duplicate order line items
-# df['is_duplicated'].sum()
-
-# Get the records of duplicated, If you need non-dup just use False instead
-df_dup = df.loc[df['is_duplicated'] == True]
-
-# Finally let's save our cleaned up data to a csv file
-df_dup.to_csv('dup.csv', encoding='utf-8')
-import xlrd
+import importlib,sys
+importlib.reload(sys)
 
 
-def open_excel(fileName="aa.xls"):
-    try:
-        fileHandler = xlrd.open_workbook(fileName)
-        return fileHandler
-    except Exception as e:
-        print(str(e))
+#http://localhost:5000/   可以访问
+app = Flask(__name__)
+api = flask_restful.Api(app)
 
+class HelloWorld(flask_restful.Resource):
+    def get(self):
+        return {'hello': 'world'}
 
+api.add_resource(HelloWorld, '/')
 
-def scan_excel(sheet_name1=u''):
-    handler = open_excel()
-    page = handler.sheet_by_name('Sheet1')
-    return page
-
-def trim_cols(index=0):
-    page = scan_excel()
-    col1 = page.col_values(index)
-    col2 = []
-    for item in col1:
-        if item not in col2:
-            col2.append(item)
-    print(col1)
-    print(col2)
-def main():
-    trim_cols()
-
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
