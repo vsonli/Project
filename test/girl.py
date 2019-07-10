@@ -51,7 +51,7 @@ def save_one_atlas(old_url):
     os.mkdir(new_name)
     
     print("图集--" + name + "--开始保存")
-    for i in range(1, int(page)+1):
+    for i in range(1, 9):
         url = old_url + "/" + str(i)
         img_url = get_img_url(url, name)
         # print(img_url)
