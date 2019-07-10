@@ -3,79 +3,87 @@
 # @File   :girl1.py
 # @Author :Vsonli
 import requests
-import os
-import time
-import threading
 from bs4 import BeautifulSoup
+import urllib
+import gevent
+from gevent import Greenlet
+import socket
+import random
 
 
-def download_page(url):
-   '''
-   用于下载页面
-   '''
-   headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"}
-   r = requests.get(url, headers=headers)
-   r.encoding = 'gb2312'
-   return r.text
+def cbk(a, b, c):
+    '''''回调函数
+    @a:已经下载的数据块
+    @b:数据块的大小
+    @c:远程文件的大小
+    '''
+    per = 100.0 * a * b / c
+    if per > 100:
+        per = 100
+    print('%.2f%%' % per)
 
 
-def get_pic_list(html):
-   '''
-   获取每个页面的套图列表,之后循环调用get_pic函数获取图片
-   '''
-   soup = BeautifulSoup(html, 'html.parser')
-   pic_list = soup.find_all('li', class_='wp-item')
-   for i in pic_list:
-       a_tag = i.find('h3', class_='tit').find('a')
-       link = a_tag.get('href')
-       text = a_tag.get_text()
-       get_pic(link, text)
-
-
-def get_pic(link, text):
-   '''
-   获取当前页面的图片,并保存
-   '''
-   html = download_page(link)  # 下载界面
-   soup = BeautifulSoup(html, 'html.parser')
-   pic_list = soup.find('div', id="picture").find_all('img')  # 找到界面所有图片
-   headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"}
-   create_dir('pic/{}'.format(text))
-   for i in pic_list:
-       pic_link = i.get('src')  # 拿到图片的具体 url
-       r = requests.get(pic_link, headers=headers)  # 下载图片，之后保存到文件
-       with open('pic/{}/{}'.format(text, link.split('/')[-1]), 'wb') as f:
-           f.write(r.content)
-           time.sleep(1)   # 休息一下，不要给网站太大压力，避免被封
-
-
-def create_dir(name):
-   if not os.path.exists(name):
-       os.makedirs(name)
-
-
-def execute(url):
-   page_html = download_page(url)
-   get_pic_list(page_html)
-
-
-def main():
-   create_dir('pic')
-   queue = [i for i in range(1, 72)]   # 构造 url 链接 页码。
-   threads = []
-   while len(queue) > 0:
-       for thread in threads:
-           if not thread.is_alive():
-               threads.remove(thread)
-       while len(threads) < 5 and len(queue) > 0:   # 最大线程数设置为 5
-           cur_page = queue.pop(0)
-           url = 'http://meizitu.com/a/more_{}.html'.format(cur_page)
-           thread = threading.Thread(target=execute, args=(url,))
-           thread.setDaemon(True)
-           thread.start()
-           print('{}正在下载{}页'.format(threading.current_thread().name, cur_page))
-           threads.append(thread)
+def photo_download(photo_thread, index_number, photo_number, number):
+    while number < 3564:
+        try:
+            i = 0
+            number = number + 1
+            url = 'http://www.zjito.com/dqfl/' + dict[i] + '/' + str(index_number) + '.shtml?idx=1'
+            # 爬虫目标网站地址
+            headers = {'user-agent': 'my-app/0.0.1'}
+            r = requests.get(url, headers=headers)
+            # 获得目标页面返回信息
+            #print(r.status_code)
+            #print(url)
+            while r.status_code == 404:
+                # 判断响应状态码
+                i = i + 1
+                url = 'http://www.zjito.com/dqfl/' + dict[1] + '/' + str(index_number) + '.shtml?idx=1'
+                #print(url)
+            else:
+                soup = BeautifulSoup(r.text, 'html.parser')
+                # 返回的信息放入soup中
+                # 获取页面全部标签信息
+                # print(soup.prettify())
+                # 测试显示的是否是页面的标签
+                for link in soup.find_all(class_="div-num"):
+                    #print(link.get('data-src'))
+                    # 输出图片地址
+                    socket.setdefaulttimeout(3.0)
+                    # 设置超时
+                    photo_number = photo_number + 1
+                    urllib.request.urlretrieve(link.get('data-src'),
+                                               file + '/' + str(photo_thread) + '_' + str(photo_number) + '.jpg', cbk)
+                    # 下载图片并显示下载进度
+                    gevent.sleep(random.randint(0, 2) * 0.001)
+                    print('ok')
+        except Exception:
+            index_number = index_number + 1
+            print('error')
+            raise Exception
+            #print(Exception)
+        index_number = index_number + 1
 
 
 if __name__ == '__main__':
-   main()
+    dict = ['zgnd', 'tw', 'xg', 'rb', 'hg', 'mlxy', 'tg', 'om', 'hx', ]
+    # 照片分类
+    photo_thread = [1, 2]
+    # 线程计数器
+    photo_number = -1
+    # 下载图片计数器，最大50
+    # index_number = 530273
+    # 页面计数器，最小530273，最大544527
+    file = 'photo/'
+    # 图片的保存地址
+    thread1 = Greenlet.spawn(photo_download, photo_thread[0], 530273, photo_number, 0)
+    # 从命名中创建，并运行新的Greenlet的包装器
+    # 函数photo_download，带有传递的参数
+    thread2 = gevent.spawn(photo_download, photo_thread[1], 533836, photo_number, 0)
+    # 两个thread运行，一个从530273页面开始爬取，另一个从537400页面开始爬取
+    # 537400 - 530273 = 7127
+    # 7127 / 2 = 3564
+    # 3564 + 530273 = 533836
+    threads = [thread1, thread2]
+    # 阻止所有线程完成
+    gevent.joinall(threads)

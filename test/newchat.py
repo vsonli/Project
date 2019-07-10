@@ -17,7 +17,11 @@ rec_msg_dict = {}
 @itchat.msg_register([TEXT, PICTURE, RECORDING, ATTACHMENT, VIDEO], isFriendChat=True)
 def handle_friend_msg(msg):
     msg_id = msg['MsgId']
-    msg_from_user = msg['User']['NickName']
+    msg_from_user = ''
+    try:
+        msg_from_user = msg['User']['NickName']
+    except :
+        print('发生了一个错误')
     msg_content = ''
     # 收到信息的时间
     msg_time_rec = time.strftime("%Y-%m-%d %H:%M%S", time.localtime())
@@ -32,7 +36,7 @@ def handle_friend_msg(msg):
         msg_content = r"" + msg['FileName']
         msg['Text'](rec_tmp_dir + msg['FileName'])
     rec_msg_dict.update({ msg_id: { 'msg_from_user': msg_from_user, 'msg_time_rec': msg_time_rec, 'msg_create_time': msg_create_time, 'msg_type': msg_type, 'msg_content': msg_content } })
-    print(msg)
+    #print(msg)
 
 
 
@@ -66,13 +70,13 @@ def revoke_msg(msg):
         # 先发送一条文字信息
         # itchat.send_msg(str(str(old_msg.get('msg_from_user')) + "撤回了一条信息："
         #                     + str(old_msg.get('msg_content'))), toUserName="filehelper")
-        print('有个鬼人物撤回了一条信息：'+ str(old_msg.get('msg_from_user')) + '：' + str(old_msg.get('msg_content')))
+        print('有人撤回了一条信息：'+ str(old_msg.get('msg_from_user')) + '：' + str(old_msg.get('msg_content')))
 
         #发送给自己的账号
         string1 = str(old_msg.get('msg_from_user')) + '：' + str(old_msg.get('msg_content'))
         users = itchat.search_friends(name='Vson')
         userName = users[0]['UserName']
-        itchat.send('有人撤回了信息', toUserName=userName)
+        #itchat.send('有人撤回了信息', toUserName=userName)
         itchat.send(string1, toUserName=userName)
         #print(userName)
 
